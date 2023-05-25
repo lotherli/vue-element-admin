@@ -26,6 +26,13 @@ export function filterAsyncRoutes(routes, roles) {
     if (hasPermission(roles, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, roles)
+         if(tmp.children.length > 0){
+          let path = tmp.children[0]?.path.replace(/\/$/, '');
+          tmp.redirect = `${tmp.path}/${path}`;
+          if(tmp.children.length === 1){
+            tmp.meta.breadcrumb = false;
+          }
+        }
       }
       res.push(tmp)
     }
